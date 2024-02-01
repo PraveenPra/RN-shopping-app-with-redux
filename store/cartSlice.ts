@@ -1,21 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSelector, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from '.'
 
 
 export interface cartProp {
  products:[],
  deliveryFee:number,
  freeOfferFrom:number
- total:number,
- cartQuantity:number
+
 }
 
 const initialState:cartProp = {
     products:[],
     deliveryFee:15,
     freeOfferFrom:1200,
-    total:0,
-    cartQuantity:0
+    
 }
 
 export const cartSlice = createSlice({
@@ -67,3 +66,19 @@ export const cartSlice = createSlice({
 export const { addToCart ,changeAmt} = cartSlice.actions
 
 export default cartSlice.reducer
+
+//selectors
+export const numbOfCartItems = (state)=>state.cart.products.length;
+
+export const subTotal = (state)=> {
+ 
+  return state.cart.products.reduce((sum,current)=> sum + current.product.price * current.quantity,0);
+  
+}
+
+const cartSelector = (state:RootState)=>state.cart;
+
+export const deliveryFee = createSelector(
+  cartSelector,subTotal,(cart,subTot) => subTot > cart.freeOfferFrom ? 0 : cart.deliveryFee
+)
+

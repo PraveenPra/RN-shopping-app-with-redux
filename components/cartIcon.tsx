@@ -1,4 +1,5 @@
-import { RootState } from '@/store';
+
+import { numbOfCartItems } from '@/store/cartSlice';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import * as React from 'react';
@@ -8,16 +9,17 @@ import { useSelector } from 'react-redux';
 interface CartIconProps {}
 
 const CartIcon = (props: CartIconProps) => {
-    const cartQuantity = useSelector((state:RootState)=>state.cart.cartQuantity)
-  return (
+    const cartQuantity = useSelector(numbOfCartItems)
+  return ( <Link href={'/cart'}>
     <View style={styles.container}>
-     <Link href={'/cart'}>
+    
   <FontAwesome5 name="shopping-cart"  style={{marginRight:20,}} size={20} color="blue"/>
-</Link>
+
 {cartQuantity > 0 && <View style={styles.badge}>
 <Text style={{color:'blue',fontSize:12,fontWeight:'bold'}}>{cartQuantity}</Text>
 </View>}
     </View>
+    </Link>
   );
 };
 

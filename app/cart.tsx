@@ -1,5 +1,5 @@
 import { RootState } from '@/store';
-import { changeAmt } from '@/store/cartSlice';
+import { changeAmt, deliveryFee, subTotal } from '@/store/cartSlice';
 import { FontAwesome5 } from '@expo/vector-icons';
 import * as React from 'react';
 import { Text, View, StyleSheet, FlatList, Image, Pressable } from 'react-native';
@@ -9,10 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Cart = () => {
     const products = useSelector((state: RootState) => state.cart.products)
-    const total = useSelector((state: RootState) => state.cart.total)
+    const subtotal = useSelector(subTotal)
+    const deliveryfee = useSelector(deliveryFee)
 
     const dispatch = useDispatch()
-    console.log(products);
 
     return (
         <View style={styles.container}>
@@ -72,10 +72,22 @@ const Cart = () => {
                 </View>)}
             />
 
-            <View style={{borderTopWidth:1,margin:10,flexDirection:'row',justifyContent:'space-around',
-        paddingVertical:10}}>
+            <View style={{borderTopWidth:1,marginHorizontal:10,flexDirection:'row',justifyContent:'space-between',
+      }}>
             <Text style={{fontSize:20,fontWeight:600}}>Total</Text>
-            <Text style={{fontSize:20,fontWeight:600}}>${total}</Text>
+            <Text style={{fontSize:20,fontWeight:600}}>${subtotal}</Text>
+            </View>
+
+            <View style={{margin:10,flexDirection:'row',justifyContent:'space-between',
+   }}>
+            <Text style={{fontSize:16,fontWeight:500}}>Delivery charges</Text>
+            <Text style={{fontSize:16,fontWeight:500}}>${deliveryfee}</Text>
+            </View>
+
+            <View style={{margin:4,flexDirection:'row',justifyContent:'space-between',
+       }}>
+            <Text style={{fontSize:20,fontWeight:900}}>Grand Total</Text>
+            <Text style={{fontSize:24,fontWeight:900}}>${subtotal + deliveryfee}</Text>
             </View>
           
 
