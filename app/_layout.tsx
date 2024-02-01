@@ -1,11 +1,16 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { Provider } from 'react-redux';
+import { store } from '@/store';
+import { Modal } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons';
+import CartIcon from '@/components/cartIcon';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -47,12 +52,17 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
+ 
+
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <Provider store={store}>    
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="index" options={{ title: 'Nike' ,headerRight:()=><CartIcon/>}} />
+        <Stack.Screen name="item-details"  options={{title:'Product details', presentation: 'modal',headerRight:()=><CartIcon/>}}/>
       </Stack>
     </ThemeProvider>
+    </Provider>
+
   );
 }
